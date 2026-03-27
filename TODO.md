@@ -9,4 +9,6 @@
 - [x] Disable cache & add debug ls in 3 jobs
 - [x] Update TODO
 - [x] commit command
-
+- [x] Generate package-lock.json with npm install
+- [ ] Commit/push package-lock.json
+- [ ] Verify workflow runs
