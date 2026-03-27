@@ -1,0 +1,19 @@
+{
+  "name": "forge-app",
+  "version": "1.0.0",
+  "description": "Reusable Electron wrapper — configure any app in apps.config.js",
+  "main": "main.js",
+  "scripts": {
+    "build:forgeq": "node build.js --app=forgeq",
+    "build:forgestudio": "node build.js --app=forgestudio",
+    "build:forgeq:mac": "node build.js --app=forgeq --platform=mac",
+    "build:forgeq:win": "node build.js --app=forgeq --platform=win",
+    "build:forgestudio:mac": "node build.js --app=forgestudio --platform=mac",
+    "build:forgestudio:win": "node build.js --app=forgestudio --platform=win",
+    "build:win": "npm run build:forgeq:win"
+  },
+  "devDependencies": {
+    "electron": "^29.0.0",
+    "electron-builder": "^24.0.0"
+  }
+}
