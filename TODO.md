@@ -3,11 +3,10 @@
 ## Plan Approved ✓
 
 **Steps:**
-- [x] User approves plan (checkout path: .)
-- [x] Edit workflow checkout
-- [x] Initial test (still error)
-- [x] Update plan: Add cache-dependency-path to setup-node
-- [x] Edit setup-node in 3 jobs
-- [x] Update TODO.md
-- [x] Final commit/push & test command
+- [x] checkout path: .
+- [x] cache-dependency-path
+- [x] test (paths not resolved)
+- [x] Disable cache & add debug ls in 3 jobs
+- [x] Update TODO
+- [x] commit command
 
