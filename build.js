@@ -63,19 +63,14 @@ const buildConfig = {
   productName: cfg.name,
   copyright: `Copyright © ${new Date().getFullYear()} ${cfg.name}`,
 
-  // Inject APP_KEY into the packaged app so main.js knows which config to load
   extraMetadata: {
     name: cfg.name,
   },
-  // Write APP_KEY to a side-loaded env file read at startup
-  // (simpler: we set it via extraMetadata + app.name resolution in main.js)
 
-  // Per-platform output
   directories: {
     output: path.join('dist', appKey),
   },
 
-  // Files to bundle — no HTML or preload needed, we use loadURL() directly
   files: [
     'main.js',
     'apps.config.js',
@@ -83,19 +78,19 @@ const buildConfig = {
     'node_modules/**/*',
   ],
 
-  // macOS - using zip (reliable CI, no DMG hdiutil issues)
+  // macOS (ZIP → stable in CI)
   mac: {
     category: 'public.app-category.productivity',
     target: ['zip'],
     icon: cfg.icon.mac,
   },
 
-
   // Windows
   win: {
     target: [{ target: 'nsis', arch: ['x64'] }],
     icon: cfg.icon.win,
   },
+
   nsis: {
     oneClick: false,
     allowToChangeInstallationDirectory: true,
@@ -115,9 +110,7 @@ const buildConfig = {
 builder.build({
   targets: getTargets(),
   config: buildConfig,
-
-  // Pass APP_KEY as an env var baked into the binary via extraMetadata
-  // We use app.name (set via productName) to resolve config in main.js
+  publish: "never",   // ✅ CRITICAL FIX (prevents GitHub auto-publish errors)
 })
   .then((files) => {
     console.log('\n✅  Build complete!\n');
