@@ -83,19 +83,14 @@ const buildConfig = {
     'node_modules/**/*',
   ],
 
-  // macOS
+  // macOS - using zip (reliable CI, no DMG hdiutil issues)
   mac: {
     category: 'public.app-category.productivity',
-    target: [{ target: 'dmg', arch: ['x64', 'arm64'] }],
+    target: ['zip'],
     icon: cfg.icon.mac,
   },
-  dmg: {
-    title: cfg.name,
-    window: { width: 540, height: 380 },
-    contents: [
-      { x: 150, y: 185, type: 'file' },
-      { x: 390, y: 185, type: 'link', path: '/Applications' },
-    ],
+  publish: {
+    provider: 'never'
   },
 
   // Windows

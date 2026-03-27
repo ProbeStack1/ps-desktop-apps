@@ -20,8 +20,7 @@ npm-debug.log
 yarn-debug.log
 yarn-error.log
 
-# Package lockfiles (consider committing npm-shrinkwrap.json instead)
-package-lock.json
+
 
 # Logs
 *.log
