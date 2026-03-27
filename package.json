@@ -15,5 +15,14 @@
   "devDependencies": {
     "electron": "^29.0.0",
     "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId": "io.probestack.default",
+    "productName": "Probestack Desktop App",
+    "publish": {
+      "provider": "github",
+      "owner": "ProbeStack1",
+      "repo": "ps-desktop-apps"
+    }
   }
 }
