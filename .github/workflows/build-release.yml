@@ -3,27 +3,26 @@ name: Build & Release
 on:
   push:
     tags:
-      - "v*"          # triggers on: git tag v1.0.0 && git push --tags
-  workflow_dispatch:  # allows manual trigger from GitHub UI
+      - "v*"
+  workflow_dispatch:
 
 jobs:
 
-  # ─────────────────────────────────────────────
-  #  macOS  →  .dmg  (builds both apps)
-  # ─────────────────────────────────────────────
+  # ─────────────────────────────
+  # macOS Build
+  # ─────────────────────────────
   build-mac:
     runs-on: macos-latest
     strategy:
       matrix:
         app: [forgeq, forgestudio]
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          path: .
-
-      - name: Debug dir
-        run: pwd && ls -la package*.json
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -40,25 +39,27 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.app }}-mac
-          path: dist/${{ matrix.app }}/*.dmg
+          path: |
+            dist/${{ matrix.app }}/*.dmg
+            dist/${{ matrix.app }}/*.zip
           retention-days: 7
 
-  # ─────────────────────────────────────────────
-  #  Windows  →  .exe  (builds both apps)
-  # ─────────────────────────────────────────────
+
+  # ─────────────────────────────
+  # Windows Build
+  # ─────────────────────────────
   build-windows:
     runs-on: windows-latest
     strategy:
       matrix:
         app: [forgeq, forgestudio]
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          path: .
-
-      - name: Debug dir
-        run: pwd && ls -la package*.json
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -78,22 +79,22 @@ jobs:
           path: dist/${{ matrix.app }}/*.exe
           retention-days: 7
 
-  # ─────────────────────────────────────────────
-  #  Linux  →  .AppImage + .deb  (builds both apps)
-  # ─────────────────────────────────────────────
+
+  # ─────────────────────────────
+  # Linux Build
+  # ─────────────────────────────
   build-linux:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         app: [forgeq, forgestudio]
+
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          path: .
-
-      - name: Debug dir
-        run: pwd && ls -la package*.json
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -120,14 +121,16 @@ jobs:
             dist/${{ matrix.app }}/*.deb
           retention-days: 7
 
-  # ─────────────────────────────────────────────
-  #  GitHub Release  →  attaches all 6 files
-  #  (runs only on tag push, after all builds pass)
-  # ─────────────────────────────────────────────
+
+  # ─────────────────────────────
+  # Release
+  # ─────────────────────────────
   release:
     needs: [build-mac, build-windows, build-linux]
     runs-on: ubuntu-latest
+
     if: startsWith(github.ref, 'refs/tags/')
+
     permissions:
       contents: write
 
@@ -137,18 +140,17 @@ jobs:
         with:
           path: release-files
 
-      - name: List files (debug)
+      - name: List files
         run: find release-files -type f
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: Release ${{ github.ref_name }}
-          draft: false
-          prerelease: false
           generate_release_notes: true
           files: |
             release-files/**/*.dmg
+            release-files/**/*.zip
             release-files/**/*.exe
             release-files/**/*.AppImage
             release-files/**/*.deb
