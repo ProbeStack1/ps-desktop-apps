@@ -89,9 +89,7 @@ const buildConfig = {
     target: ['zip'],
     icon: cfg.icon.mac,
   },
-  publish: {
-    provider: 'never'
-  },
+
 
   // Windows
   win: {
