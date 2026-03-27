@@ -3,8 +3,11 @@
 ## Plan Approved ✓
 
 **Steps:**
-- [x] User approves plan
-- [x] Edit .github/workflows/build-release.yml (add path: . to 3 checkout steps)
+- [x] User approves plan (checkout path: .)
+- [x] Edit workflow checkout
+- [x] Initial test (still error)
+- [x] Update plan: Add cache-dependency-path to setup-node
+- [x] Edit setup-node in 3 jobs
 - [x] Update TODO.md
-- [x] Suggest commit/push & test
+- [x] Final commit/push & test command
 
